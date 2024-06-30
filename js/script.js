@@ -7,36 +7,96 @@ let score = JSON.parse(localStorage.getItem('score')) || {
 updateScore();
 resetScoreHidden();
 
+let isAutoPlaying = false;
+let intervalId;
+
+function autoPlay() {
+  if (!isAutoPlaying) {
+    intervalId = setInterval(() => {
+      const playerMove = pickedComputerMove();
+      playGame(playerMove)
+    }, 1000);
+    isAutoPlaying = true;
+    document.querySelector('.js-auto-play').innerHTML = 'Stop Play'
+  } else {
+    clearInterval(intervalId);
+    isAutoPlaying = false;
+    document.querySelector('.js-auto-play').innerHTML = 'Auto Play'
+  }
+}
+
+document.querySelector('.js-rock-button')
+  .addEventListener('click', () => {
+    playGame('Rock');
+  })
+
+document.querySelector('.js-paper-button')
+  .addEventListener('click', () => {
+    playGame('Paper');
+  })
+
+document.querySelector('.js-scissors-button')
+  .addEventListener('click', () => {
+    playGame('Scissors');
+  })
+
+document.querySelector('.js-reset')
+  .addEventListener('click', () => {
+    showResetWarning();
+  })
+
+document.querySelector('.js-auto-play')
+  .addEventListener('click', () => {
+    autoPlay();
+  })
+
+document.body
+  .addEventListener('keydown', (event) => {
+    if (event.key === 'r') {
+      playGame('Rock');
+    } else if (event.key === 'p') {
+      playGame('Paper');
+    } else if (event.key === 's') {
+      playGame('Scissors');
+    } else if (event.key === 'a') {
+      autoPlay();
+    } else if (event.key === 'Backspace') {
+      showResetWarning();
+    }
+
+    console.log(event.key);
+  })
+
 function playGame(playerMove) {
   const computerMove = pickedComputerMove();
-  
+
   let result = '';
 
   if (playerMove === 'Rock') {
     if (computerMove === 'Rock') {
-    result = 'It\'s a tie!';
+      result = 'It\'s a tie!';
 
-  } else if (computerMove === 'Paper') {
-    result = 'You Lose!';
+    } else if (computerMove === 'Paper') {
+      result = 'You Lose!';
 
-  } else if (computerMove === 'Scissors') {
-    result = 'You Win!';
-  }
+    } else if (computerMove === 'Scissors') {
+      result = 'You Win!';
+    }
 
   } else if (playerMove === 'Paper') {
     if (computerMove === 'Rock') {
-    result = 'You Win!';
+      result = 'You Win!';
 
-  } else if (computerMove === 'Paper') {
-    result = 'It\'s a tie!';
+    } else if (computerMove === 'Paper') {
+      result = 'It\'s a tie!';
 
-  } else if (computerMove === 'Scissors') {
-    result = 'You Lose!';
-  }
+    } else if (computerMove === 'Scissors') {
+      result = 'You Lose!';
+    }
 
   } else if (playerMove === 'Scissors') {
     if (computerMove === 'Rock') {
-    result = 'You Lose!';
+      result = 'You Lose!';
 
     } else if (computerMove === 'Paper') {
       result = 'You Win!';
@@ -69,7 +129,7 @@ function updateScore() {
 
 function pickedComputerMove() {
   const randomNumber = Math.random();
-  
+
   let computerMove = '';
 
   if (randomNumber >= 0 && randomNumber < 1 / 3) {
@@ -80,14 +140,43 @@ function pickedComputerMove() {
     computerMove = 'Scissors'
   }
 
-return computerMove;
+  return computerMove;
 }
 
+
+
+function showResetWarning() {
+  document.querySelector('.reset-warn').classList.add('js-reset-warn');
+}
+
+function hideResetWarning() {
+  document.querySelector('.reset-warn').classList.remove('js-reset-warn');
+}
+
+document.querySelector('.reset-button-yes')
+  .addEventListener('click', () => {
+    resetWarningDicission('yes')
+  })
+
+document.querySelector('.reset-button-no')
+  .addEventListener('click', () => {
+    resetWarningDicission('no')
+  })
+
+function resetWarningDicission(dicission) {
+  if (dicission === 'yes') {
+    resetScore();
+    hideResetWarning();
+  } else if (dicission === 'no') {
+    hideResetWarning();
+  }
+}
+  
 function resetScore() {
   score.Wins = 0;
   score.Loses = 0;
   score.Ties = 0;
-  
+
   localStorage.removeItem('score');
 
   updateScore();
@@ -96,6 +185,8 @@ function resetScore() {
   document.querySelector('.js-moves').innerHTML = ``;
   resetScoreHidden();
 }
+
+
 
 function resetScoreHidden() {
   if (updateScore() === (score === true)) {
