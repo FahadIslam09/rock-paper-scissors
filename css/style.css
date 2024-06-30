@@ -97,14 +97,84 @@ section {
   display: inline-block;
 }
 
-.hidden-reset-button:hover {
+.hidden-reset-button:hover, .js-auto-play:hover {
   background-color: rgb(39 38 38);
+}
+
+.js-auto-play {
+  background-color: transparent;
+  border: 2px solid #FFFFFF;
+  color: #FFFFFF;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 12px 24px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.reset-warn {
+  background-color: #292828;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+  line-height: 1.4rem;
+  display: none;
+}
+
+.reset-warn-button {
+  display: flex;
+  gap: 17px;
+}
+
+.reset-warn p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.reset-warn button {
+  font-size: 16px;
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #292828;
+  border: none;
+  border-radius: 5px;
+}
+
+.js-reset-warn {
+  display: inline-block;
+  display: flex;
 }
 
 
 @media screen and (max-width: 519px) {
   .title {
     font-size: 2.5rem;
+  }
+
+  .reset-warn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    display: none;
+  }
+
+  .js-reset-warn {
+    display: inline-block;
+    display: flex;
+  }
+
+  .reset-warn p {
+    font-size: 18px;
   }
 }
 
@@ -131,6 +201,10 @@ section {
   .move {
     gap: 10px;
   }
+
+  .reset-warn p {
+    font-size: 16px;
+  }
 }
 
 @media screen and (max-width: 320.98px) {
@@ -146,5 +220,9 @@ section {
   
   .move-button img {
     width: 40px;
+  }
+
+  .reset-warn p {
+    text-align: center;
   }
 }
